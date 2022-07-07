@@ -38,7 +38,7 @@ with models.DAG(
 
 
 create_dataset = BigQueryCreateEmptyDatasetOperator(
-	task_id="create_dataset", 
+	task_id="create_dataset",
 	dataset_id=dataset_id)
 
 get_dataset_tables = BigQueryGetDatasetTablesOperator(
