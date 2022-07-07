@@ -10,11 +10,11 @@ from airflow.providers.google.cloud.operators.bigquery import (
 from airflow.providers.google.cloud.transfers.gcs_to_bigquery import GCSToBigQueryOperator
 
 # importing environment variables from airflow
-bigquery_dataset_id = models.Variable.get('dataset_name')
-project_id = models.Variable.get('project_name')
+bigquery_dataset_id = models.Variable.get('bigquery_dataset_id')
+project_id = models.Variable.get('project_id')
 bigquery_table_name = models.Variable.get('bigquery_table_name')
 gcs_bucket_name = models.Variable.get('gcs_bucket_name')
-gcs_data_path = models.Variable.get('source_gcs_data_path')
+gcs_data_path = models.Variable.get('gcs_data_path')
 
 # yesterday=datetime.datetime.combine(
 #     datetime.datetime.today() - datetime.timedelta(1),
