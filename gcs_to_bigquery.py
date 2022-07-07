@@ -22,7 +22,7 @@ yesterday=datetime.datetime.combine(
 
 default_dag_args={
     'start_date': datetime(2021, 7, 6),
-    'email' : ['harshavardhan.bashetty@arcinsights.io']
+    'email' : ['harshavardhan.bashetty@arcinsights.io'],
     'email_on_failure': True,
     'email_on_retry': True,
     'retries': 1,
