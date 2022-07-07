@@ -50,7 +50,6 @@ with models.DAG(
     	source_objects=[source_gcs_data_path],
     	destination_project_dataset_table=f"{dataset_id}.{bigquery_table_name}",
     	autodetect=True,
-    	write_disposition='WRITE_TRUNCATE',
     	skip_leading_rows=1)
 
 
