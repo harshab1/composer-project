@@ -1,11 +1,8 @@
 import datetime
 from airflow import models
 from airflow.providers.google.cloud.operators.bigquery import (
-    BigQueryCreateEmptyDatasetOperator,
-    BigQueryDeleteDatasetOperator,
-    BigQueryGetDatasetOperator,
-    BigQueryUpdateDatasetOperator,
-    BigQueryGetDatasetTablesOperator
+    BigQueryCreateEmptyDatasetOperator 
+    # BigQueryGetDatasetTablesOperator
 )
 from airflow.providers.google.cloud.transfers.gcs_to_bigquery import GCSToBigQueryOperator
 
@@ -40,9 +37,9 @@ with models.DAG(
 		task_id="create_dataset", 
 		dataset_id=bigquery_dataset_id)
 
-	get_dataset_tables = BigQueryGetDatasetTablesOperator(
-    	task_id="get_dataset_tables", 
-    	dataset_id=bigquery_dataset_id)
+	# get_dataset_tables = BigQueryGetDatasetTablesOperator(
+    # 	task_id="get_dataset_tables", 
+    # 	dataset_id=bigquery_dataset_id)
 
 	load_csv = GCSToBigQueryOperator(
     	task_id='load_csv',
@@ -52,4 +49,4 @@ with models.DAG(
     	autodetect=True,
     	skip_leading_rows=1)
 
-	create_dataset >>  get_dataset_tables >> load_csv
+	create_dataset >>  load_csv
