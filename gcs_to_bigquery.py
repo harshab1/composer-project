@@ -16,38 +16,24 @@ bigquery_table_name = models.Variable.get('bigquery_table_name')
 gcs_bucket_name = models.Variable.get('gcs_bucket_name')
 gcs_data_path = models.variable.get('source_gcs_data_path')
 
-yesterday=datetime.datetime.combine(
-    datetime.datetime.today() - datetime.timedelta(1),
-    datetime.datetime.min.time())
+# yesterday=datetime.datetime.combine(
+#     datetime.datetime.today() - datetime.timedelta(1),
+#     datetime.datetime.min.time())
 
 default_dag_args={
     'start_date': datetime(2021, 7, 6),
     'email' : ['harshavardhan.bashetty@arcinsights.io'],
     'email_on_failure': True,
     'email_on_retry': True,
-    'retries': 1,
-    'retry_delay': datetime.timedelta(minutes=5),
+    'retries': 5,
+    'retry_delay': datetime.timedelta(minutes=1),
     'project_id': project_id
 }
-
-
-# with models.DAG(
-#         'composer_gcs_to_bigquery_dataloader',
-#         schedule_interval=datetime.timedelta(days=1),
-#         default_args=default_dag_args) as dag:
-
-# with models.DAG(
-#     dag_id='composer_gcs_to_bigquery_dataloader',
-#     schedule_interval='@once',
-#     default_args=default_dag_args
-# ) as dag:
 
 with models.DAG(
     dag_id='composer_gcs_to_bigquery_dataloader',
     schedule_interval='@once',
-    start_date=datetime(2021, 1, 1),
-    catchup=False,
-    project_id=project_id
+    default_args=default_dag_args
 ) as dag:
 
 
