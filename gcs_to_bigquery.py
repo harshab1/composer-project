@@ -22,7 +22,7 @@ gcs_data_path = models.variable.get('source_gcs_data_path')
 
 default_dag_args={
     'start_date': datetime(2021, 7, 6),
-    'email' : ['harshavardhan.bashetty@arcinsights.io'],
+    'email' : ['harshavardhan.bashetty@arcinsights.io']
     'email_on_failure': True,
     'email_on_retry': True,
     'retries': 5,
@@ -36,23 +36,22 @@ with models.DAG(
     default_args=default_dag_args
 ) as dag:
 
+	create_dataset = BigQueryCreateEmptyDatasetOperator(
+		task_id="create_dataset", 
+		dataset_id=dataset_id)
 
-create_dataset = BigQueryCreateEmptyDatasetOperator(
-	task_id="create_dataset",
-	dataset_id=dataset_id)
+	get_dataset_tables = BigQueryGetDatasetTablesOperator(
+    	task_id="get_dataset_tables", 
+    	dataset_id=dataset_id)
 
-get_dataset_tables = BigQueryGetDatasetTablesOperator(
-    task_id="get_dataset_tables", 
-    dataset_id=dataset_id)
-
-load_csv = GCSToBigQueryOperator(
-    task_id='gcs_to_bigquery',
-    bucket='cloud-samples-data',
-    source_objects=[source_gcs_data_path],
-    destination_project_dataset_table=f"{dataset_id}.{bigquery_table_name}",
-    autodetect=True,
-    write_disposition='WRITE_TRUNCATE',
-    skip_leading_rows=1)
+	load_csv = GCSToBigQueryOperator(
+    	task_id='gcs_to_bigquery',
+    	bucket='cloud-samples-data',
+    	source_objects=[source_gcs_data_path],
+    	destination_project_dataset_table=f"{dataset_id}.{bigquery_table_name}",
+    	autodetect=True,
+    	write_disposition='WRITE_TRUNCATE',
+    	skip_leading_rows=1)
 
 
-create_dataset >>  get_dataset_tables >> load_csv
+	create_dataset >>  get_dataset_tables >> load_csv
