@@ -41,11 +41,11 @@ with models.DAG(
 
 	create_dataset = BigQueryCreateEmptyDatasetOperator(
 		task_id="create_dataset", 
-		dataset_id=bigquery_dataset_id + '-{{ ds_nodash }}')
+		dataset_id=bigquery_dataset_id )
 
 	get_dataset_tables = BigQueryGetDatasetTablesOperator(
     	task_id="get_dataset_tables", 
-    	dataset_id=bigquery_dataset_id + '-{{ ds_nodash }}')
+    	dataset_id=bigquery_dataset_id )
 
 	load_csv = GCSToBigQueryOperator(
     	task_id='load_csv',
