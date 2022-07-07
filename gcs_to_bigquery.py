@@ -22,10 +22,10 @@ gcs_data_path = models.Variable.get('gcs_data_path')
 default_dag_args={
     'start_date': datetime(2021, 7, 6),
     'email' : ['harshavardhan.bashetty@arcinsights.io'],
-    'email_on_failure': True,
-    'email_on_retry': True,
-    'retries': 5,
-    'retry_delay': datetime.timedelta(minutes=1),
+    # 'email_on_failure': True,
+    # 'email_on_retry': True,
+    # 'retries': 5,
+    # 'retry_delay': datetime.timedelta(minutes=1),
     'project_id': project_id
 }
 
