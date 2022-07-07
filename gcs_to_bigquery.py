@@ -38,19 +38,18 @@ with models.DAG(
 
 	create_dataset = BigQueryCreateEmptyDatasetOperator(
 		task_id="create_dataset", 
-		dataset_id=dataset_id)
+		dataset_id=bigquery_dataset_id)
 
 	get_dataset_tables = BigQueryGetDatasetTablesOperator(
     	task_id="get_dataset_tables", 
-    	dataset_id=dataset_id)
+    	dataset_id=bigquery_dataset_id)
 
 	load_csv = GCSToBigQueryOperator(
-    	task_id='gcs_to_bigquery',
-    	bucket='cloud-samples-data',
-    	source_objects=[source_gcs_data_path],
-    	destination_project_dataset_table=f"{dataset_id}.{bigquery_table_name}",
+    	task_id='load_csv',
+    	bucket=gcs_bucket_name,
+    	source_objects=[gcs_data_path],
+    	destination_project_dataset_table=f"{bigquery_dataset_id}.{bigquery_table_name}",
     	autodetect=True,
     	skip_leading_rows=1)
-
 
 	create_dataset >>  get_dataset_tables >> load_csv
