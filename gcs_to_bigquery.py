@@ -14,7 +14,7 @@ bigquery_dataset_id = models.Variable.get('dataset_name')
 project_id = models.Variable.get('project_name')
 bigquery_table_name = models.Variable.get('bigquery_table_name')
 gcs_bucket_name = models.Variable.get('gcs_bucket_name')
-gcs_data_path = models.variable.get('source_gcs_data_path')
+gcs_data_path = models.Variable.get('source_gcs_data_path')
 
 # yesterday=datetime.datetime.combine(
 #     datetime.datetime.today() - datetime.timedelta(1),
