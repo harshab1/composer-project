@@ -1,0 +1,50 @@
+[2022-07-13 15:35:28,763] {taskinstance.py:1179} INFO - Dependencies all met for <TaskInstance: project_dag_v3.print_data manual__2022-07-13T15:31:23.002079+00:00 [queued]>
+[2022-07-13 15:35:28,773] {taskinstance.py:1179} INFO - Dependencies all met for <TaskInstance: project_dag_v3.print_data manual__2022-07-13T15:31:23.002079+00:00 [queued]>
+[2022-07-13 15:35:28,775] {taskinstance.py:1376} INFO - 
+--------------------------------------------------------------------------------
+[2022-07-13 15:35:28,776] {taskinstance.py:1377} INFO - Starting attempt 3 of 6
+[2022-07-13 15:35:28,776] {taskinstance.py:1378} INFO - 
+--------------------------------------------------------------------------------
+[2022-07-13 15:35:28,791] {taskinstance.py:1397} INFO - Executing <Task(PythonOperator): print_data> on 2022-07-13 15:31:23.002079+00:00
+[2022-07-13 15:35:28,796] {standard_task_runner.py:52} INFO - Started process 3725 to run task
+[2022-07-13 15:35:28,800] {standard_task_runner.py:79} INFO - Running: ['***', 'tasks', 'run', 'project_dag_v3', 'print_data', 'manual__2022-07-13T15:31:23.002079+00:00', '--job-id', '85', '--raw', '--subdir', 'DAGS_FOLDER/project_dag.py', '--cfg-path', '/tmp/tmpmigda0l3', '--error-file', '/tmp/tmphqyn0ezh']
+[2022-07-13 15:35:28,802] {standard_task_runner.py:80} INFO - Job 85: Subtask print_data
+[2022-07-13 15:35:28,875] {task_command.py:371} INFO - Running <TaskInstance: project_dag_v3.print_data manual__2022-07-13T15:31:23.002079+00:00 [running]> on host 3bcedaf5b66b
+[2022-07-13 15:35:28,961] {taskinstance.py:1591} INFO - Exporting the following env vars:
+AIRFLOW_CTX_DAG_OWNER=harshab
+AIRFLOW_CTX_DAG_ID=project_dag_v3
+AIRFLOW_CTX_TASK_ID=print_data
+AIRFLOW_CTX_EXECUTION_DATE=2022-07-13T15:31:23.002079+00:00
+AIRFLOW_CTX_TRY_NUMBER=3
+AIRFLOW_CTX_DAG_RUN_ID=manual__2022-07-13T15:31:23.002079+00:00
+[2022-07-13 15:35:28,979] {taskinstance.py:1909} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.7/site-packages/airflow/operators/python.py", line 171, in execute
+    return_value = self.execute_callable()
+  File "/home/airflow/.local/lib/python3.7/site-packages/airflow/operators/python.py", line 189, in execute_callable
+    return self.python_callable(*self.op_args, **self.op_kwargs)
+  File "/opt/airflow/dags/project_dag.py", line 30, in print_data
+    df = pd.read_csv(data_csv_file)
+  File "/home/airflow/.local/lib/python3.7/site-packages/pandas/util/_decorators.py", line 311, in wrapper
+    return func(*args, **kwargs)
+  File "/home/airflow/.local/lib/python3.7/site-packages/pandas/io/parsers/readers.py", line 586, in read_csv
+    return _read(filepath_or_buffer, kwds)
+  File "/home/airflow/.local/lib/python3.7/site-packages/pandas/io/parsers/readers.py", line 482, in _read
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+  File "/home/airflow/.local/lib/python3.7/site-packages/pandas/io/parsers/readers.py", line 811, in __init__
+    self._engine = self._make_engine(self.engine)
+  File "/home/airflow/.local/lib/python3.7/site-packages/pandas/io/parsers/readers.py", line 1040, in _make_engine
+    return mapping[engine](self.f, **self.options)  # type: ignore[call-arg]
+  File "/home/airflow/.local/lib/python3.7/site-packages/pandas/io/parsers/c_parser_wrapper.py", line 51, in __init__
+    self._open_handles(src, kwds)
+  File "/home/airflow/.local/lib/python3.7/site-packages/pandas/io/parsers/base_parser.py", line 229, in _open_handles
+    errors=kwds.get("encoding_errors", "strict"),
+  File "/home/airflow/.local/lib/python3.7/site-packages/pandas/io/common.py", line 614, in get_handle
+    storage_options=storage_options,
+  File "/home/airflow/.local/lib/python3.7/site-packages/pandas/io/common.py", line 396, in _get_filepath_or_buffer
+    raise ValueError(msg)
+ValueError: Invalid file path or buffer object type: <class 'NoneType'>
+[2022-07-13 15:35:28,993] {taskinstance.py:1420} INFO - Marking task as UP_FOR_RETRY. dag_id=project_dag_v3, task_id=print_data, execution_date=20220713T153123, start_date=20220713T153528, end_date=20220713T153528
+[2022-07-13 15:35:29,005] {standard_task_runner.py:97} ERROR - Failed to execute job 85 for task print_data (Invalid file path or buffer object type: <class 'NoneType'>; 3725)
+[2022-07-13 15:35:29,055] {local_task_job.py:156} INFO - Task exited with return code 1
+[2022-07-13 15:35:29,099] {local_task_job.py:273} INFO - 0 downstream tasks scheduled from follow-on schedule check
