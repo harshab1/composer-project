@@ -18,7 +18,6 @@ default_args = {
     'owner':'harshab',
     'retries': 5,
     'retry_delay':timedelta(minutes=2)
-
 }
 
 def create_gcs_bucket(ti):
@@ -66,11 +65,11 @@ def get_data(ti):
 
 
 with DAG(
-    dag_id='project_dag_v6',
-    description='Project DAG',
+    dag_id='data_loaded_to_gcs',
+    description='data_loaded_to_gcs DAG',
     default_args=default_args,
-    start_date=datetime(2022,7,12,2),
-    schedule_interval='@daily'
+    start_date=datetime(2022,7,15),
+    schedule_interval='@once'
 ) as dag:
 
     create_bucket = PythonOperator(
