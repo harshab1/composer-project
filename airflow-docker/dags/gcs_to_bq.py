@@ -22,16 +22,11 @@ default_args = {
 
 def create_bq_dataset(ti):
     # Construct a BigQuery client object.
-    client = bigquery.Client(ti)
-    client.project = project_id
-
-    print('project id is:', project_id)
-    print('type of project id variable:', type(project_id))
-
-
+    client = bigquery.Client()
 
     # Construct a full Dataset object to send to the API.
-    dataset_id = "composer_dataset"
+    dataset_id = str(project_id+"."+"composer_dataset_"+datetime.now().strftime("%Y%m%d_%H%M%S"))
+
     dataset = bigquery.Dataset(dataset_id)
 
     print('Dataset ID is:', dataset.dataset_id)
@@ -45,13 +40,28 @@ def create_bq_dataset(ti):
     # exists within the project.
     dataset = client.create_dataset(dataset, timeout=30)  # Make an API request.
     print("Created dataset {}.{}".format(client.project, dataset.dataset_id))
+    print("Dataset id:",dataset.dataset_id)
+    print("Type of dataset id:",type(dataset.dataset_id))
+    print("---Other---")
+    print("Dataset id:",dataset_id)
+    print("Type of dataset id:",type(dataset_id))
+
 
     ti.xcom_push(key='dataset_id', value=dataset_id)
 
 def load_data_to_table(ti):
 
-    dataset_id = ti.xcom_pull(task_ids='create_bq_dataset', key='dataset_id')
-    table_id = dataset_id+"."+"stock_data"
+    # dataset_id = ti.xcom_pull(task_ids='create_bq_dataset', key='dataset_id')
+    # print("type of project id:", type(project_id))
+    # print("dataset id:", dataset_id)
+    # print("type of dataset id:", type(dataset_id))
+
+    # table_id = dataset_id+"."+"stock_data"
+
+    table_id = "arcinsights-proj1-20220706.composer_dataset_20220717_185618.stock_data"
+
+    print("table id:", table_id)
+    print("type of table id:", type(table_id))
     
     # Construct a BigQuery client object.
     client = bigquery.Client()
@@ -59,16 +69,16 @@ def load_data_to_table(ti):
     # TODO(developer): Set table_id to the ID of the table to create.
     # table_id = "your-project.your_dataset.your_table_name
 
-    job_config = bigquery.LoadJobConfig(
-        schema=[
-            bigquery.SchemaField("Date", "DATE"),
-            bigquery.SchemaField("Open", "FLOAT64"),
-            bigquery.SchemaField("High", "FLOAT64"),
-            bigquery.SchemaField("Low", "FLOAT64"),
-            bigquery.SchemaField("Close", "FLOAT64"),
-            bigquery.SchemaField("Volume", "INT64")
-        ],
-    )
+    # job_config = bigquery.LoadJobConfig(
+    #     schema=[
+    #         bigquery.SchemaField("Date", "DATE"),
+    #         bigquery.SchemaField("Open", "FLOAT64"),
+    #         bigquery.SchemaField("High", "FLOAT64"),
+    #         bigquery.SchemaField("Low", "FLOAT64"),
+    #         bigquery.SchemaField("Close", "FLOAT64"),
+    #         bigquery.SchemaField("Volume", "INT64")
+    #     ],
+    # )
 
     # body = six.BytesIO(b"Washington,WA")
     # client.load_table_from_file(body, table_id, job_config=job_config).result()
@@ -77,8 +87,17 @@ def load_data_to_table(ti):
 
     job_config = bigquery.LoadJobConfig(
         # write_disposition=bigquery.WriteDisposition.WRITE_TRUNCATE,
+        # schema=[
+        #     bigquery.SchemaField("Date", "DATE"),
+        #     bigquery.SchemaField("Open", "FLOAT64"),
+        #     bigquery.SchemaField("High", "FLOAT64"),
+        #     bigquery.SchemaField("Low", "FLOAT64"),
+        #     bigquery.SchemaField("Close", "FLOAT64"),
+        #     bigquery.SchemaField("Volume", "INT64")
+        # ],
         source_format=bigquery.SourceFormat.CSV,
         skip_leading_rows=1,
+        autodetect = True
     )
 
     uri = "gs://composer_proj_direct_bucket_20220716/stock_data.csv"
@@ -93,10 +112,10 @@ def load_data_to_table(ti):
     
 
 with DAG(
-    dag_id = "gcs_to_bq_v2",
+    dag_id = "gcs_to_bq_v19",
     description = "data_in_gcs_loaded_to_bq_table",
     default_args = default_args,
-    start_date = datetime(2022,7,15),
+    start_date = datetime(2022,7,16),
     schedule_interval = '@once'
 ) as dag:
 

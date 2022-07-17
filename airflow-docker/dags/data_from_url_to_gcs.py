@@ -65,7 +65,7 @@ def get_data(ti):
 
 
 with DAG(
-    dag_id='data_loaded_to_gcs',
+    dag_id='data_loaded_to_gcs_v0',
     description='data_loaded_to_gcs DAG',
     default_args=default_args,
     start_date=datetime(2022,7,15),
