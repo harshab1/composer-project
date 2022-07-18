@@ -20,7 +20,7 @@ default_args = {
     'project_id':project_id
 }
 
-def create_bq_dataset(ti):
+def create_bq_dataset(**kwargs):
     # Construct a BigQuery client object.
     client = bigquery.Client()
 
@@ -47,18 +47,22 @@ def create_bq_dataset(ti):
     print("Type of dataset id:",type(dataset_id))
 
 
-    ti.xcom_push(key='dataset_id', value=dataset_id)
+    task_instance = kwargs['task_instance']
+    task_instance.xcom_push(key='dataset_id', value=dataset_id)
+    return dataset_id
 
-def load_data_to_table(ti):
+def load_data_to_table(**kwargs):
 
+    task_instance = kwargs['task_instance']
+    dataset_id = task_instance.xcom_pull(task_ids='create_bq_dataset')
     # dataset_id = ti.xcom_pull(task_ids='create_bq_dataset', key='dataset_id')
-    # print("type of project id:", type(project_id))
-    # print("dataset id:", dataset_id)
-    # print("type of dataset id:", type(dataset_id))
+    print("type of project id:", type(project_id))
+    print("dataset id:", dataset_id)
+    print("type of dataset id:", type(dataset_id))
 
-    # table_id = dataset_id+"."+"stock_data"
+    table_id = dataset_id+"."+"stock_data"
 
-    table_id = "arcinsights-proj1-20220706.composer_dataset_20220717_185618.stock_data"
+    # table_id = "arcinsights-proj1-20220706.composer_dataset_20220717_185618.stock_data"
 
     print("table id:", table_id)
     print("type of table id:", type(table_id))
@@ -112,7 +116,7 @@ def load_data_to_table(ti):
     
 
 with DAG(
-    dag_id = "gcs_to_bq_v19",
+    dag_id = "gcs_to_bq_v1",
     description = "data_in_gcs_loaded_to_bq_table",
     default_args = default_args,
     start_date = datetime(2022,7,16),
