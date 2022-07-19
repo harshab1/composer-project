@@ -55,13 +55,13 @@ def get_data(ti):
     df.columns = ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
     print(df.head())
     print("bucket name is: ", bucket_name)
-    df.to_csv('data.csv')
+    df.to_csv('gs://us-east1-arcinsights-compos-02a28967-bucket/data.csv')
 
     storage_client = storage.Client()
     bucket = storage_client.bucket(bucket_name)
     blob = bucket.blob('dataset/')
 
-    blob.upload_from_filename('data.csv')
+    blob.upload_from_filename('gs://us-east1-arcinsights-compos-02a28967-bucket/data.csv')
 
 
 with DAG(
